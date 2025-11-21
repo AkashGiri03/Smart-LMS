@@ -1,0 +1,12 @@
+[{
+    "name":"Test Instructor",
+    "email":"instructor@example.com",
+    "password":"password@123",
+    "role":"instructor"
+},
+{
+    "name":"Test Student",
+    "email":"student@example.com",
+    "password":"password@123",
+    "role":"student"
+}]
