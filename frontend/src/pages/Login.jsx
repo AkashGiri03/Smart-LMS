@@ -5,13 +5,9 @@ import illustration from "../assets/illustration.svg";
 export default function Login() {
   return (
     <div
-      className="d-flex flex-column"
-      style={{
-        minHeight: "100vh",
-        background: "white",
-        padding: "20px",
-      }}
-    >
+  className="d-flex flex-column login-bg"
+  style={{ minHeight: "100vh", padding: "20px" }}
+>
       <div className="row d-flex align-items-center justify-content-center">
         {/* LEFT — Illustration */}
         <div className="col-md-6 d-none d-md-flex justify-content-center">
@@ -37,7 +33,7 @@ export default function Login() {
               color: "white",
             }}
           >
-            <h2 className="text-center mb-4 fw-semibold text-dark">Login to SmartLMS</h2>
+            <h2 className="text-center mb-4 fw-bold text-primary">Login to SmartLMS</h2>
 
             <form>
               {/* Email */}
@@ -97,12 +93,12 @@ export default function Login() {
               </div>
 
               {/* Button */}
-              <button className="btn btn-light w-100 fw-bold">Login</button>
+              <button className="btn btn-primary w-100 fw-bold">Login</button>
             </form>
 
             <p className="text-center mt-3 text-dark">
               Don’t have an account?{" "}
-              <Link to="/signup" className="text-primary">
+              <Link to="/register" className="text-primary">
                 Sign Up
               </Link>
             </p>

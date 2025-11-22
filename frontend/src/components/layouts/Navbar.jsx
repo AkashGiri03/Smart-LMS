@@ -52,7 +52,7 @@ export default function Navbar() {
           {/* Right-aligned Buttons */}
           <div className="d-flex gap-2">
             <Link to="/login" className="btn btn-outline-light px-3">Login</Link>
-            <Link to="/signup" className="btn btn-primary px-3">Sign Up</Link>
+            <Link to="/register" className="btn btn-primary px-3">Sign Up</Link>
           </div>
 
         </div>
