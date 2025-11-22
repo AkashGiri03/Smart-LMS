@@ -66,7 +66,7 @@
 
 
 
-// AI updated version
+// updated version
 
 import mongoose from 'mongoose';
 import Category from "../models/CategoryModel.js";
