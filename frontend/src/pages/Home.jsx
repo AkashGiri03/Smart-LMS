@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import CourseCard from "../components/CourseCard";
 import "../App.css";
-import hero_illustration from "../assets/hero_illustration.svg";
+import FeaturedSection from "../components/home/FeaturedSection.jsx";
+import HeroSection from "../components/home/HeroSection.jsx";
 
 export default function Home() {
   const featuredCourses = [
@@ -98,47 +99,7 @@ export default function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="hero-section d-flex align-items-center text-white">
-        <div className="container">
-          <div className="row align-items-center">
-            {/* Left Content */}
-            <div className="col-md-6 mb-4 mb-md-0">
-              <h1 className="display-4 fw-bold mb-3 animate-fade">
-                Upgrade Your Skills with{" "}
-                <span className="text-warning">Smart LMS</span>
-              </h1>
-              <p className="lead mb-4">
-                Learn anytime, anywhere with interactive, high-quality online
-                courses created by industry experts.
-              </p>
-
-              <div className="d-flex gap-3">
-                <Link
-                  to="/courses"
-                  className="btn btn-warning btn-lg px-4 py-2"
-                >
-                  Browse Courses
-                </Link>
-                <Link
-                  to="/login"
-                  className="btn btn-outline-light btn-lg px-4 py-2"
-                >
-                  Get Started
-                </Link>
-              </div>
-            </div>
-
-            {/* Right Image */}
-            <div className="col-md-6 text-center">
-              <img
-                src={hero_illustration}
-                alt="Learning Illustration"
-                className="img-fluid hero-img animate-fade"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection/>
 
       {/* Browse Categories Section */}
       <section className="container my-5">
@@ -172,89 +133,7 @@ export default function Home() {
       </section>
 
       {/* Featured Courses */}
-      <section
-        className="py-5"
-        style={{ backgroundColor: "#f8f9fa" }} // light whitish background
-      >
-        <div className="container">
-          <h2 className="mb-2 text-center">Featured Courses</h2>
-          <p className="text-center text-muted mb-4 fst-italic">
-            Hand-picked courses to start your learning journey
-          </p>
-
-          <div className="row g-4">
-            {featuredCourses.map((course, index) => (
-              <div className="col-12 col-md-6 col-lg-4" key={index}>
-                <Link
-                  to={course.link}
-                  className="text-decoration-none text-dark"
-                >
-                  <div
-                    className="card h-100 rounded overflow-hidden shadow-lg border-0 position-relative"
-                    style={{ transition: "0.3s" }}
-                  >
-                    {/* Category Tag */}
-                    <span
-                      className="badge bg-primary position-absolute"
-                      style={{
-                        top: "10px",
-                        right: "10px",
-                        padding: "8px 12px",
-                        fontSize: "0.75rem",
-                        zIndex: 2,
-                      }}
-                    >
-                      Course Category: {course.category}
-                    </span>
-
-                    {/* Image */}
-                    <img
-                      src={course.image}
-                      className="card-img-top"
-                      alt={course.title}
-                      style={{ height: "180px", objectFit: "cover" }}
-                    />
-
-                    <div className="card-body d-flex flex-column">
-                      {/* Title */}
-                      <h5 className="card-title fw-semibold">{course.title}</h5>
-
-                      {/* Description */}
-                      <p className="card-text flex-grow-1 text-muted">
-                        {course.description}
-                      </p>
-
-                      {/* Rating + Instructor */}
-                      <div className="d-flex justify-content-between align-items-center">
-                        <span className="text-warning fw-bold">
-                          ⭐ {course.rating}
-                        </span>
-                        <small className="text-muted">
-                          {course.instructor}
-                        </small>
-                      </div>
-
-                      {/* Price BELOW rating */}
-                      <div className="mt-2">
-                        <span className="fw-bold text-success fs-5">
-                          {course.price}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-            ))}
-          </div>
-
-          {/* View All Courses Button */}
-          <div className="text-center mt-4">
-            <Link to="/courses" className="btn btn-primary btn-lg px-4">
-              View All Courses
-            </Link>
-          </div>
-        </div>
-      </section>
+      <FeaturedSection courses={featuredCourses} />
 
       {/* Why Choose Smart LMS Section */}
       <section className="py-5" style={{ background: "#ffffff" }}>
