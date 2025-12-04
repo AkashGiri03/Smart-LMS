@@ -2,7 +2,7 @@ import { createContext , useContext , useState } from "react";
 import axios from 'axios';
 
 const AuthContext = createContext();
-const backendURL = 'http://localhost:3002';
+const backendURL = 'http://localhost:3002/';
 
 export const AuthProvider = ({ children }) =>{
     const [user , setUser] = useState(null);
@@ -12,8 +12,9 @@ export const AuthProvider = ({ children }) =>{
         try {
             const { data } = await axios.post(backendURL + "api/auth/login" , {email , password});
             //save into state
-            setUser(data);
-            localStorage.setItem('user',JSON.stringify(data));//storing user info in local storage
+            console.log("token data",data);
+            setUser(data.user);
+            localStorage.setItem('user',JSON.stringify(data.user));//storing user info in local storage
         } catch (error){
             console.log("login failed",error);
         }
@@ -26,7 +27,7 @@ export const AuthProvider = ({ children }) =>{
     }
 
 
-    return <AuthContext.Provider value={{user , setUser}}>
+    return <AuthContext.Provider value={{user , login , logout}}>
         {children}
     </AuthContext.Provider>
 }

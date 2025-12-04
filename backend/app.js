@@ -22,7 +22,7 @@ app.use(cors());
 
 
 app.use('/api/auth',router);
-app.use('/api/course', courseRoutes);
+app.use('/api/courses', courseRoutes);
 app.use('/api/category', categoryRoutes);
 
 if(process.env.NODE_ENV === 'dev'){

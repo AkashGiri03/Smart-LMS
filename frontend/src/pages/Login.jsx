@@ -1,13 +1,32 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import illustration from "../assets/illustration.svg";
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
+  const [form, setForm] = useState({ email: "", password: "" });
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("login form submitted", form);
+    //pass login info to auth context
+
+    await login(form.email, form.password);
+    navigate("/");
+  };
+
   return (
     <div
-  className="d-flex flex-column login-bg"
-  style={{ minHeight: "100vh", padding: "20px" }}
->
+      className="d-flex flex-column login-bg"
+      style={{ minHeight: "100vh", padding: "20px" }}
+    >
       <div className="row d-flex align-items-center justify-content-center">
         {/* LEFT — Illustration */}
         <div className="col-md-6 d-none d-md-flex justify-content-center">
@@ -33,9 +52,11 @@ export default function Login() {
               color: "white",
             }}
           >
-            <h2 className="text-center mb-4 fw-bold text-primary">Login to SmartLMS</h2>
+            <h2 className="text-center mb-4 fw-bold text-primary">
+              Login to SmartLMS
+            </h2>
 
-            <form>
+            <form onSubmit={handleSubmit}>
               {/* Email */}
               <div className="mb-3">
                 <label htmlFor="email" className="form-label text-dark">
@@ -49,6 +70,9 @@ export default function Login() {
                     type="email"
                     className="form-control"
                     id="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
                     placeholder="Enter your email"
                     required
                   />
@@ -68,6 +92,9 @@ export default function Login() {
                     type="password"
                     className="form-control"
                     id="password"
+                    name="password"
+                    value={form.password}
+                    onChange={handleChange}
                     placeholder="Enter your password"
                     required
                   />

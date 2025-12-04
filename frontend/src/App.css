@@ -95,6 +95,19 @@
 }
 
 
+/* course-card */
+.course-card {
+  transition: all 0.25s ease-in-out;
+}
+
+.course-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+/* categorysidebar */
+
+
 
 
 

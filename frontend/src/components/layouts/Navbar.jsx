@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 export default function Navbar() {
   const collapseRef = useRef(null);
+  const { user, logout } = useAuth();
 
   useEffect(() => {
-    // Initialize collapse manually
     const collapseEl = collapseRef.current;
     if (collapseEl) {
       new bootstrap.Collapse(collapseEl, { toggle: false });
@@ -16,8 +17,7 @@ export default function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3 sticky-top">
       <div className="container">
-
-        {/* Brand on the left */}
+        {/* Brand */}
         <Link className="navbar-brand fw-bold fs-4" to="/">
           Smart<span className="text-primary">LMS</span>
         </Link>
@@ -39,22 +39,48 @@ export default function Navbar() {
 
         {/* Collapse */}
         <div className="collapse navbar-collapse" ref={collapseRef}>
+          {/* RIGHT SIDE NAV LINKS & BUTTONS */}
+          <div className="d-flex align-items-center ms-auto gap-4">
+            {/* HOME + COURSES (RIGHT SIDE) */}
+            <ul className="navbar-nav mb-0 gap-3 d-flex flex-row">
+              <li className="nav-item">
+                <Link className="nav-link" to="/">
+                  Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/courses">
+                  Courses
+                </Link>
+              </li>
+            </ul>
 
-          {/* Centered Links */}
-          <ul className="navbar-nav mx-auto mb-0 gap-3">
-            <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/courses">Courses</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/dashboard">Dashboard</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/about">About</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/contact">Contact</Link></li>
-          </ul>
+            {/* LOGIN / SIGNUP / LOGOUT BUTTONS */}
+            <div className="d-flex gap-2">
+              {!user ? (
+                <>
+                  <Link to="/login" className="btn btn-outline-light px-3">
+                    Login
+                  </Link>
+                  <Link to="/register" className="btn btn-primary px-3">
+                    Sign Up
+                  </Link>
+                </>
+              ) : (
+                <div className="d-flex align-items-center gap-3">
+                  {/* WELCOME MESSAGE */}
+                  <span className="text-light fw-semibold">
+                    Hi, {user.name}
+                  </span>
 
-          {/* Right-aligned Buttons */}
-          <div className="d-flex gap-2">
-            <Link to="/login" className="btn btn-outline-light px-3">Login</Link>
-            <Link to="/register" className="btn btn-primary px-3">Sign Up</Link>
+                  {/* LOGOUT BUTTON */}
+                  <button className="btn btn-danger px-3" onClick={logout}>
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-
         </div>
       </div>
     </nav>

@@ -66,7 +66,7 @@
 
 
 
-// AI updated version
+// updated version
 
 import mongoose from 'mongoose';
 import Category from "../models/CategoryModel.js";
@@ -91,6 +91,50 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 connectdb();
 
+// const importData = async () => {
+//   try {
+//     // Clear collections
+//     await Course.deleteMany();
+//     await Category.deleteMany();
+//     await User.deleteMany();
+
+//     // Read user data
+//     const userData = JSON.parse(fs.readFileSync(path.join(__dirname, 'users.json'), 'utf-8'));
+
+//     // Hash passwords
+//     const usersWithHashedPassword = userData.map((user) => {
+//       const salt = bcrypt.genSaltSync(10);
+//       const hashedPassword = bcrypt.hashSync(user.password, salt);
+//       return { ...user, password: hashedPassword };
+//     });
+
+//     const createdUsers = await User.insertMany(usersWithHashedPassword);
+//     const instructorUser = createdUsers.find(user => user.role === 'instructor');
+
+//     // Read category data
+//     const categoryData = JSON.parse(fs.readFileSync(path.join(__dirname, 'category.json'), 'utf-8'));
+//     const createdCategory = await Category.insertMany(categoryData);
+//     const webdevCategory = createdCategory.find(category => category.name === 'Web Dev');
+
+//     // Insert courses
+//     const courses = [{
+//       title: 'Complete Web dev course 2025',
+//       description: 'Random text about the course: command not found: asdfsdf',
+//       price: 99,
+//       instructor: instructorUser._id,
+//       category: webdevCategory._id,
+//     }];
+
+//     await Course.insertMany(courses);
+
+//     console.log('Data is successfully added to database!');
+//     process.exit();
+//   } catch (error) {
+//     console.log('Error while importing data:', error);
+//     process.exit(1);
+//   }
+// };
+
 const importData = async () => {
   try {
     // Clear collections
@@ -109,31 +153,75 @@ const importData = async () => {
     });
 
     const createdUsers = await User.insertMany(usersWithHashedPassword);
+
+    // Pick an instructor
     const instructorUser = createdUsers.find(user => user.role === 'instructor');
 
-    // Read category data
+    // Read categories
     const categoryData = JSON.parse(fs.readFileSync(path.join(__dirname, 'category.json'), 'utf-8'));
-    const createdCategory = await Category.insertMany(categoryData);
-    const webdevCategory = createdCategory.find(category => category.name === 'Web Dev');
+    const createdCategories = await Category.insertMany(categoryData);
 
-    // Insert courses
-    const courses = [{
-      title: 'Complete Web dev course 2025',
-      description: 'Random text about the course: command not found: asdfsdf',
-      price: 99,
-      instructor: instructorUser._id,
-      category: webdevCategory._id,
-    }];
+    // Helper to get category ID
+    const getCategory = (name) =>
+      createdCategories.find(cat => cat.name === name)._id;
+
+    // Insert multiple courses
+    const courses = [
+      {
+        title: "Complete Web Dev Course 2025",
+        description: "Learn full-stack development from scratch.",
+        price: 99,
+        instructor: instructorUser._id,
+        category: getCategory("Web Dev"),
+      },
+      {
+        title: "DSA Masterclass",
+        description: "Data Structures & Algorithms with coding problems.",
+        price: 79,
+        instructor: instructorUser._id,
+        category: getCategory("DSA"),
+      },
+      {
+        title: "AI Fundamentals",
+        description: "Basics of Artificial Intelligence, ML concepts.",
+        price: 129,
+        instructor: instructorUser._id,
+        category: getCategory("AI"),
+      },
+      {
+        title: "UI/UX Design Bootcamp",
+        description: "Learn modern design principles and Figma.",
+        price: 59,
+        instructor: instructorUser._id,
+        category: getCategory("Design"),
+      },
+      {
+        title: "Data Analytics Pro",
+        description: "Learn Excel, SQL, Power BI & real-world dashboards.",
+        price: 89,
+        instructor: instructorUser._id,
+        category: getCategory("Data Analytics"),
+      },
+      {
+        title: "Advanced Machine Learning",
+        description: "Hands-on ML models, pipelines, deployment.",
+        price: 149,
+        instructor: instructorUser._id,
+        category: getCategory("AI"),
+      }
+    ];
 
     await Course.insertMany(courses);
 
-    console.log('Data is successfully added to database!');
+    console.log("Data is successfully added to database!");
     process.exit();
   } catch (error) {
-    console.log('Error while importing data:', error);
+    console.log("Error while importing data:", error);
     process.exit(1);
   }
 };
+
+
 
 const destroyData = async () => {
   try {

@@ -85,7 +85,15 @@ export const loginUser = async (req, res) => {
                     console.error(err);
                     return res.status(500).send('Server Error');
                 }
-                return res.status(201).json({ token });
+                return res.status(201).json({
+                    token,
+                    user: {
+                        id: user._id,
+                        name: user.name,
+                        email: user.email,
+                        role: user.role,
+                    },
+                });
             }
         );
     } catch (error) {

@@ -5,7 +5,7 @@ import axios from 'axios';
 const backendURL = 'http://localhost:3002';
 
 const FeaturedSection = ({ courses = [] }) =>{
-  const featured = courses || [];
+  const featured = courses || [];  // This was temprary data passed as props before calling api
 
   const [course , setCourse] = useState([]);
   const [isLoading , setisLoading] = useState(true);
@@ -15,7 +15,7 @@ const FeaturedSection = ({ courses = [] }) =>{
         // fetch the data using axios
         const fetchCourses = async ()=>{
             try{
-                const response = await axios.get(backendURL+'/api/course');
+                const response = await axios.get(backendURL+'/api/courses');
                 console.log("response",response.data);
                 // save into state
                 setCourse(response.data);
