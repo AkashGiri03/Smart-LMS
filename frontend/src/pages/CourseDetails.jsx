@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import CheckoutButton from "../components/CheckOutButton.jsx";
 
 export default function CourseDetails() {
   const { id } = useParams();
@@ -112,83 +113,83 @@ export default function CourseDetails() {
         </div>
 
         {/* RIGHT SIDE — Udemy Style Card (NON-STICKY) */}
-<div className="col-lg-4">
-  <div
-    className="card shadow-sm p-4"
-    style={{ borderRadius: "12px" }}
-  >
-    {/* Pricing */}
-    <div className="d-flex align-items-end gap-2">
-      <h2 className="fw-bold mb-0">₹{course.price}</h2>
+        <div className="col-lg-4">
+          <div className="card shadow-sm p-4" style={{ borderRadius: "12px" }}>
+            {/* Pricing */}
+            <div className="d-flex align-items-end gap-2">
+              <h2 className="fw-bold mb-0">₹{course.price}</h2>
 
-      {course.originalPrice && (
-        <>
-          <h5 className="text-muted text-decoration-line-through mb-1">
-            ₹{course.originalPrice}
-          </h5>
-          <span className="text-success fw-bold mb-1">
-            {Math.round(
-              ((course.originalPrice - course.price) / course.originalPrice) * 100
-            )}% off
-          </span>
-        </>
-      )}
-    </div>
+              {course.originalPrice && (
+                <>
+                  <h5 className="text-muted text-decoration-line-through mb-1">
+                    ₹{course.originalPrice}
+                  </h5>
+                  <span className="text-success fw-bold mb-1">
+                    {Math.round(
+                      ((course.originalPrice - course.price) /
+                        course.originalPrice) *
+                        100
+                    )}
+                    % off
+                  </span>
+                </>
+              )}
+            </div>
 
-    {/* Timer */}
-    <p className="text-danger small mt-2">
-      <i className="bi bi-clock-history me-1"></i>
-      Few hours left at this price!
-    </p>
+            {/* Timer */}
+            <p className="text-danger small mt-2">
+              <i className="bi bi-clock-history me-1"></i>
+              Few hours left at this price!
+            </p>
 
-    {/* Buttons */}
-    <button className="btn btn-dark w-100 py-2 fw-bold mt-3">
-      Add to cart
-    </button>
+            {/* Buttons */}
+            <button className="btn btn-dark w-100 py-2 fw-bold mt-3">
+              Add to cart
+            </button>
 
-    <button className="btn btn-outline-dark w-100 py-2 fw-bold mt-3">
-      Buy now
-    </button>
+            {/* <button className="btn btn-outline-dark w-100 py-2 fw-bold mt-3">
+              Buy now
+            </button> */}
 
-    {/* Guarantee */}
-    <p className="text-center text-muted small mt-3">
-      30-Day Money-Back Guarantee
-    </p>
+            <CheckoutButton course={course} />
 
-    {/* Includes Section */}
-    <h5 className="fw-bold mt-4 mb-3">This course includes:</h5>
 
-    <ul className="list-unstyled text-muted">
+            {/* Guarantee */}
+            <p className="text-center text-muted small mt-3">
+              30-Day Money-Back Guarantee
+            </p>
 
-      <li className="mb-2 d-flex align-items-center">
-        <i className="bi bi-camera-video me-2"></i>
-        {course.videoHours || "3"} hours on-demand video
-      </li>
+            {/* Includes Section */}
+            <h5 className="fw-bold mt-4 mb-3">This course includes:</h5>
 
-      <li className="mb-2 d-flex align-items-center">
-        <i className="bi bi-file-earmark-text me-2"></i>
-        {course.articles || "3"} articles
-      </li>
+            <ul className="list-unstyled text-muted">
+              <li className="mb-2 d-flex align-items-center">
+                <i className="bi bi-camera-video me-2"></i>
+                {course.videoHours || "3"} hours on-demand video
+              </li>
 
-      <li className="mb-2 d-flex align-items-center">
-        <i className="bi bi-phone me-2"></i>
-        Access on mobile & TV
-      </li>
+              <li className="mb-2 d-flex align-items-center">
+                <i className="bi bi-file-earmark-text me-2"></i>
+                {course.articles || "3"} articles
+              </li>
 
-      <li className="mb-2 d-flex align-items-center">
-        <i className="bi bi-infinity me-2"></i>
-        Full lifetime access
-      </li>
+              <li className="mb-2 d-flex align-items-center">
+                <i className="bi bi-phone me-2"></i>
+                Access on mobile & TV
+              </li>
 
-      <li className="mb-2 d-flex align-items-center">
-        <i className="bi bi-award me-2"></i>
-        Certificate of completion
-      </li>
+              <li className="mb-2 d-flex align-items-center">
+                <i className="bi bi-infinity me-2"></i>
+                Full lifetime access
+              </li>
 
-    </ul>
-  </div>
-</div>
-
+              <li className="mb-2 d-flex align-items-center">
+                <i className="bi bi-award me-2"></i>
+                Certificate of completion
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );

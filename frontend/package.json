@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "proxy":"http://localhost:3002/",
+  "proxy": "http://localhost:3002/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,9 +11,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@stripe/stripe-js": "^8.5.3",
     "axios": "^1.13.2",
     "bootstrap": "^5.0.0-alpha1",
     "bootstrap-icons": "^1.13.1",
+    "dotenv": "^17.2.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.6"
