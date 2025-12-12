@@ -1,4 +1,4 @@
-# LMS – Learning Management System
+# LMS – Learning Management System(E-learning Application)
 
 LMS is a full-stack **MERN application** for managing online courses. 
 It includes **user authentication**, **course management**, and a **secure payment system** for course enrollment. 
