@@ -1,28 +1,31 @@
-import jwt from 'jsonwebtoken';
-import User from '../models/userModel';
+import jwt from "jsonwebtoken";
+import User from "../models/userModel.js";
 
+export const authProtect = async (req, res, next) => {
+  try {
+    let token;
 
-export const authProtect = async( req, res, next) =>{
-    // get the token from request header
-    // Bearer token
-    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
-        return res.status(401).json({message:'Unauthorized, no token!'})
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer ")
+    ) {
+      token = req.headers.authorization.split(" ")[1];
     }
-    try {
-        
-        const tokenArr = req.headers.authorization.split(' ');
-        const token = tokenArr[1];
 
-        //decode the token
-        // token info about user
-        const decodeToken = jwt.verify(token , process.env.JWT_SECRET);
-
-        //FETCH USER INFO FROM USERID STORED IN TOKEN
-        req.user = await User.findById(decodeToken.user.id).select('-password');
-        next();
-    
-        
-    } catch (error) {
-        return res.status(401).json({message:'Unauthorized, Invalid token!'})
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized, no token!" });
     }
-}
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    req.user = await User.findById(decoded.user.id).select("-password");
+
+    if (!req.user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Unauthorized, invalid token!" });
+  }
+};

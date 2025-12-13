@@ -3,12 +3,30 @@ import loadRazorpay from "../utils/loadRazorpay";
 
 export default function CheckoutButton({ course }) {
   const handleBuy = async () => {
+    const token = localStorage.getItem("token");
+
+    // 🚫 NOT LOGGED IN
+    if (!token) {
+      localStorage.setItem("redirectAfterLogin", window.location.pathname);
+      window.location.href = "/login";
+      return;
+    }
+
+    // ✅ LOGGED IN → continue
     const ok = await loadRazorpay();
-    if (!ok) return alert("Failed to load Razorpay");
+    if (!ok) {
+      alert("Failed to load Razorpay");
+      return;
+    }
 
     const { data: order } = await axios.post(
       `${import.meta.env.VITE_API_BASE}/api/payment/create-order`,
-      { amount: course.price }
+      { amount: course.price },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
     const options = {
@@ -18,6 +36,7 @@ export default function CheckoutButton({ course }) {
       name: "Your App",
       description: course.title,
       order_id: order.id,
+
       handler: async (response) => {
         const res = await axios.post(
           `${import.meta.env.VITE_API_BASE}/api/payment/verify-payment`,
@@ -26,10 +45,17 @@ export default function CheckoutButton({ course }) {
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
             metadata: { courseId: course._id },
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
 
-        if (res.data.success) alert("Payment Successful");
+        if (res.data.success) {
+          alert("Payment Successful");
+        }
       },
     };
 
