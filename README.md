@@ -1,3 +1,4 @@
+
 # LMS – Learning Management System(E-Learning Application)
 
 LMS is a full-stack **MERN application** for managing online courses. 
@@ -22,4 +23,5 @@ This project demonstrates full-stack development skills using **MongoDB, Express
 - **Database:** MongoDB  
 - **Authentication:** JWT (JSON Web Tokens)  
 - **Payments:** [payment gateway, Stripe]  
+
 
