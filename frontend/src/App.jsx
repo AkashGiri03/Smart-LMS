@@ -9,6 +9,7 @@ import CourseDetails from "./pages/CourseDetails.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import LessonPlayerPage from "./pages/LessonPlayerPage.jsx";
+import LearningPage from "./pages/LearningPage.jsx";
 
 
 function App() {
