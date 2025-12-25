@@ -10,6 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import LessonPlayerPage from "./pages/LessonPlayerPage.jsx";
 import LearningPage from "./pages/LearningPage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 
 
 function App() {
@@ -26,7 +27,8 @@ function App() {
           <Route path="/course/:id" element={<CourseDetails />} />
           <Route element={<PrivateRoute />}>
             <Route path="/learning" element={<LearningPage />} />
-            <Route path="/learn/courses/:id" element={<LessonPlayerPage />} />            
+            <Route path="/learn/courses/:id" element={<LessonPlayerPage />} />    
+            <Route path="/profile" element={<ProfilePage />} />         
           </Route>
         </Routes>
       </main>

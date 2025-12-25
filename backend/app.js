@@ -4,11 +4,12 @@ const app = express();
 import dotenv from 'dotenv';
 import connectdb from './config/db.js';
 import cors from 'cors';
-import router from './routes/authRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 import categoryRoutes from './routes/categoryroutes.js'
 import courseRoutes from './routes/courseroutes.js'
 import paymentRoutes from "./routes/paymentRoutes.js";
 import webhookRoutes from "./routes/webhooks.js";
+import userRoutes from './routes/userRoutes.js';
 
 
 dotenv.config();
@@ -28,11 +29,12 @@ app.use(cors({
 }));
 
 
-app.use('/api/auth',router);
+app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/category', categoryRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/webhook", webhookRoutes);
+app.use("/api/user", userRoutes);
 
 if(process.env.NODE_ENV === 'dev'){
     app.use(morgan('dev'));

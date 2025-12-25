@@ -2,17 +2,20 @@ import mongoose from "mongoose";
 import { title } from "process";
 const { Schema } = mongoose;
 
-// module schema
-const moduleSchema = new Schema({
-    title : { type : String , required : true},
-    lessons : [lessonSchema],
-})
 
 // lesson schema 
 const lessonSchema = new Schema({
     title : { type : String , require: true},
     videoUrl : { type : String , required : true},
 })
+
+// module schema
+const moduleSchema = new Schema({
+    title : { type : String , required : true},
+    lessons : [lessonSchema],
+})
+
+
 
 
 const CourseSchema = new Schema({
