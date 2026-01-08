@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle";
 import { useAuth } from "../../context/AuthContext.jsx";
+import { useCart } from "../../context/CartContext.jsx";
 
 export default function Navbar() {
   const collapseRef = useRef(null);
   const { user, logout } = useAuth();
+  const { cartItems } = useCart();
 
   useEffect(() => {
     const collapseEl = collapseRef.current;
@@ -51,6 +53,21 @@ export default function Navbar() {
               <li className="nav-item">
                 <Link className="nav-link" to="/courses">
                   Courses
+                </Link>
+              </li>
+
+              {/* Showing the mycourses when user logged-in */}
+              {user && (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/my-courses">
+                    My Courses
+                  </Link>
+                </li>
+              )}
+
+              <li>
+                <Link className="nav-link" to="/cart">
+                  🛒 Cart ({cartItems.length})
                 </Link>
               </li>
             </ul>

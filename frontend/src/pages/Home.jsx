@@ -3,6 +3,8 @@ import CourseCard from "../components/CourseCard";
 import "../App.css";
 import FeaturedSection from "../components/home/FeaturedSection.jsx";
 import HeroSection from "../components/home/HeroSection.jsx";
+import BrowseCategory from "../components/home/BrowseCategory.jsx";
+import WhyChosesec from "../components/home/WhyChosesec.jsx";
 
 export default function Home() {
   const featuredCourses = [
@@ -44,57 +46,7 @@ export default function Home() {
     },
   ];
 
-  const categories = [
-    {
-      name: "Web Development",
-      link: "/categories/web",
-      startColor: "#6a11cb",
-      endColor: "#2575fc",
-      image:
-        "https://cdn.jsdelivr.net/npm/bootstrap-icons/icons/code-slash.svg",
-      courseCount: 24,
-    },
-    {
-      name: "Data Science",
-      link: "/categories/data",
-      startColor: "#ff512f",
-      endColor: "#dd2476",
-      image: "https://cdn.jsdelivr.net/npm/bootstrap-icons/icons/bar-chart.svg",
-      courseCount: 18,
-    },
-    {
-      name: "Design",
-      link: "/categories/design",
-      startColor: "#f7971e",
-      endColor: "#ffd200",
-      image: "https://cdn.jsdelivr.net/npm/bootstrap-icons/icons/brush.svg",
-      courseCount: 12,
-    },
-    {
-      name: "Marketing",
-      link: "/categories/marketing",
-      startColor: "#56ab2f",
-      endColor: "#a8e063",
-      image: "https://cdn.jsdelivr.net/npm/bootstrap-icons/icons/megaphone.svg",
-      courseCount: 8,
-    },
-    {
-      name: "Business",
-      link: "/categories/business",
-      startColor: "#ff4b1f",
-      endColor: "#ff9068",
-      image: "https://cdn.jsdelivr.net/npm/bootstrap-icons/icons/briefcase.svg",
-      courseCount: 15,
-    },
-    {
-      name: "Personal Development",
-      link: "/categories/personal",
-      startColor: "#00c6ff",
-      endColor: "#0072ff",
-      image: "https://cdn.jsdelivr.net/npm/bootstrap-icons/icons/person.svg",
-      courseCount: 10,
-    },
-  ];
+  
 
   return (
     <div>
@@ -102,99 +54,13 @@ export default function Home() {
       <HeroSection/>
 
       {/* Browse Categories Section */}
-      <section className="container my-5">
-        <h2 className="mb-4 text-center">Browse Categories</h2>
-        <div className="row g-4">
-          {categories.map((cat, index) => (
-            <div className="col-6 col-md-4 col-lg-2 text-center" key={index}>
-              <Link
-                to={cat.link}
-                className="category-card-gradient d-flex flex-column align-items-center justify-content-center p-4 rounded text-decoration-none text-white h-100"
-                style={{
-                  background: `linear-gradient(135deg, ${cat.startColor}, ${cat.endColor})`,
-                }}
-              >
-                <img
-                  src={cat.image}
-                  alt={cat.name}
-                  className="mb-3"
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    objectFit: "contain",
-                  }}
-                />
-                <span className="fw-semibold mb-1">{cat.name}</span>
-                <small>{cat.courseCount} Courses</small>
-              </Link>
-            </div>
-          ))}
-        </div>
-      </section>
+      <BrowseCategory/>
 
       {/* Featured Courses */}
       <FeaturedSection courses={featuredCourses} />
 
       {/* Why Choose Smart LMS Section */}
-      <section className="py-5" style={{ background: "#ffffff" }}>
-        <div className="container">
-          <h2 className="text-center mb-3">Why Choose Smart LMS?</h2>
-          <p className="text-center text-muted mb-5 fst-italic">
-            Experience a smarter way to learn with features designed for every
-            learner
-          </p>
-
-          <div className="row g-4">
-            {/* Feature 1 */}
-            <div className="col-md-6 col-lg-3">
-              <div className="feature-card p-4 text-center h-100 rounded-4 shadow-sm">
-                <i className="bi bi-award fs-1 text-primary mb-3"></i>
-                <h5 className="fw-bold mb-2">Expert Instructors</h5>
-                <p className="text-muted">
-                  Learn from industry professionals with years of teaching and
-                  real-world experience.
-                </p>
-              </div>
-            </div>
-
-            {/* Feature 2 */}
-            <div className="col-md-6 col-lg-3">
-              <div className="feature-card p-4 text-center h-100 rounded-4 shadow-sm">
-                <i className="bi bi-play-circle fs-1 text-success mb-3"></i>
-                <h5 className="fw-bold mb-2">Interactive Lessons</h5>
-                <p className="text-muted">
-                  Engaging videos, quizzes, assignments, and hands-on projects
-                  to enhance your learning.
-                </p>
-              </div>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="col-md-6 col-lg-3">
-              <div className="feature-card p-4 text-center h-100 rounded-4 shadow-sm">
-                <i className="bi bi-phone fs-1 text-warning mb-3"></i>
-                <h5 className="fw-bold mb-2">Learn Anywhere</h5>
-                <p className="text-muted">
-                  Access all courses on mobile, tablet, or desktop — learn at
-                  your own pace, anytime.
-                </p>
-              </div>
-            </div>
-
-            {/* Feature 4 */}
-            <div className="col-md-6 col-lg-3">
-              <div className="feature-card p-4 text-center h-100 rounded-4 shadow-sm">
-                <i className="bi bi-patch-check fs-1 text-danger mb-3"></i>
-                <h5 className="fw-bold mb-2">Certificates of Completion</h5>
-                <p className="text-muted">
-                  Earn industry-recognized certificates to showcase your skills
-                  and boost your career.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <WhyChosesec/>
 
       {/* Call to Action Section */}
       <section

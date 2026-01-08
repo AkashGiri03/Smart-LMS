@@ -3,6 +3,8 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import illustration from "../assets/illustration.svg";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext.jsx";
+import { mergeCartAfterLogin } from "../utils/mergeCart.js";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -13,13 +15,22 @@ export default function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const { setCartItems } = useCart();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("login form submitted", form);
-    //pass login info to auth context
 
-    await login(form.email, form.password);
-    navigate("/");
+    try {
+      // login
+      const token = await login(form.email, form.password);
+
+      // fire-and-forget
+      mergeCartAfterLogin(token, setCartItems).catch(console.error);
+
+      navigate("/");
+    } catch (err) {
+      console.error("Login failed", err);
+    }
   };
 
   return (

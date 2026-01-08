@@ -1,7 +1,7 @@
 import axios from "axios";
 import loadRazorpay from "../utils/loadRazorpay";
 
-export default function CheckoutButton({ course }) {
+export default function CheckoutButton({ course, cartItems, total }) {
   const handleBuy = async () => {
     const token = localStorage.getItem("token");
 
@@ -12,16 +12,28 @@ export default function CheckoutButton({ course }) {
       return;
     }
 
-    // ✅ LOGGED IN → continue
     const ok = await loadRazorpay();
     if (!ok) {
       alert("Failed to load Razorpay");
       return;
     }
 
+    // 🔥 CART CHECKOUT
+    const isCartCheckout = Array.isArray(cartItems);
+
+    const payload = isCartCheckout
+      ? {
+          amount: total,
+          courseIds: cartItems.map((i) => (i.course || i)._id),
+        }
+      : {
+          amount: course.price,
+          courseIds: [course._id],
+        };
+
     const { data: order } = await axios.post(
       `${import.meta.env.VITE_API_BASE}/api/payment/create-order`,
-      { amount: course.price },
+      payload,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -34,7 +46,7 @@ export default function CheckoutButton({ course }) {
       amount: order.amount,
       currency: order.currency,
       name: "Your App",
-      description: course.title,
+      description: "Course Purchase",
       order_id: order.id,
 
       handler: async (response) => {
@@ -44,7 +56,7 @@ export default function CheckoutButton({ course }) {
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
-            metadata: { courseId: course._id },
+            metadata: payload,
           },
           {
             headers: {
@@ -53,8 +65,11 @@ export default function CheckoutButton({ course }) {
           }
         );
 
+        console.log("✅ Verify-payment response:", res.data);
+
         if (res.data.success) {
-          alert("Payment Successful");
+          localStorage.removeItem("cart");
+          window.location.href = res.data.redirectTo;
         }
       },
     };
@@ -63,8 +78,8 @@ export default function CheckoutButton({ course }) {
   };
 
   return (
-    <button className="btn btn-primary mt-3" onClick={handleBuy}>
-      Buy Now — ₹{course.price}
+    <button className="btn btn-primary w-100 fw-bold mt-2" onClick={handleBuy}>
+      Proceed to Checkout
     </button>
   );
 }

@@ -1,5 +1,8 @@
 import { razorpay } from "../config/razorpay.js";
 import crypto from "crypto";
+import User from "../models/UserModel.js";
+import Order from "../models/Order.js";
+import Cart from "../models/Cart.js";
 
 // create order (amount in INR)
 export const createOrder = async (req, res) => {
@@ -25,20 +28,74 @@ export const createOrder = async (req, res) => {
 // verify signature after payment (frontend sends razorpay_* params)
 export const verifyPayment = async (req, res) => {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, metadata } = req.body;
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      metadata,
+    } = req.body;
+
+    // 🔐 STEP 2A: Verify signature
     const generated_signature = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(`${razorpay_order_id}|${razorpay_payment_id}`)
       .digest("hex");
 
-    if (generated_signature === razorpay_signature) {
-      // Save payment to DB, update order status, enroll user, etc.
-      return res.status(200).json({ success: true });
-    } else {
-      return res.status(400).json({ success: false, message: "Invalid signature" });
+    if (generated_signature !== razorpay_signature) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid signature" });
     }
+
+    // ✅ PAYMENT IS VERIFIED AT THIS POINT
+
+    const userId = req.user._id;
+
+    const courseIds = metadata?.courseIds;
+    const amount = metadata?.amount;
+
+    if (!Array.isArray(courseIds) || courseIds.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No courses provided for enrollment",
+      });
+    }
+
+    // 🎓 STEP 2B: Enroll user (safe & idempotent)
+    await User.findByIdAndUpdate(req.user._id, {
+      $addToSet: {
+        enrolledCourses: { $each: courseIds },
+      },
+    });
+
+    const updatedUser = await User.findById(req.user._id);
+    console.log("User enrolledCourses:", updatedUser.enrolledCourses);
+
+    // 🧾 STEP 2C: Save order (VERY IMPORTANT)
+    await Order.create({
+      user: userId,
+      totalAmount: amount,
+      paymentStatus: "PAID",
+      items: courseIds.map((id) => ({ course: id })), // 🔥 IMPORTANT
+      razorpayOrderId: razorpay_order_id,
+      razorpayPaymentId: razorpay_payment_id,
+    });
+
+    console.log("✅ Payment verified & order saved for user:", userId);
+
+    // 🧹 Clear user's cart
+    await Cart.updateOne({ user: req.user._id }, { $set: { items: [] } });
+
+    // ✅ STEP 2D: Tell frontend what to do next
+    return res.status(200).json({
+      success: true,
+      redirectTo: "/my-courses",
+    });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: "verification failed" });
+    console.error("verifyPayment error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Payment verification failed",
+    });
   }
 };

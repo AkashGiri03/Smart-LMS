@@ -8,10 +8,11 @@ import CoursesPage from "./pages/CoursesPage.jsx";
 import CourseDetails from "./pages/CourseDetails.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import PrivateRoute from "./components/PrivateRoute.jsx";
-import LessonPlayerPage from "./pages/LessonPlayerPage.jsx";
-import LearningPage from "./pages/LearningPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
-
+import Cart from "./pages/Cart.jsx";
+import Checkout from "./pages/CheckOut.jsx";
+import MyCourses from "./pages/MyCourses";
+import LearnCourse from "./pages/LearnCourse.jsx";
 
 function App() {
   return (
@@ -25,10 +26,12 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/courses" element={<CoursesPage />} />
           <Route path="/course/:id" element={<CourseDetails />} />
+          <Route path="/cart" element={<Cart />} />
           <Route element={<PrivateRoute />}>
-            <Route path="/learning" element={<LearningPage />} />
-            <Route path="/learn/courses/:id" element={<LessonPlayerPage />} />    
-            <Route path="/profile" element={<ProfilePage />} />         
+            <Route path="/learn/:courseId" element={<LearnCourse/>} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/my-courses" element={<MyCourses />} />
           </Route>
         </Routes>
       </main>
@@ -39,6 +42,3 @@ function App() {
 }
 
 export default App;
-
-
-

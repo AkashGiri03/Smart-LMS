@@ -2,21 +2,29 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import CheckoutButton from "../components/CheckOutButton.jsx";
+import { useCart } from "../context/CartContext.jsx";
 
 export default function CourseDetails() {
   const { id } = useParams();
+
+  // 🔥 ALL HOOKS AT TOP — NO EXCEPTIONS
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [ownedIds, setOwnedIds] = useState([]);
 
+  const { addToCart, cartItems } = useCart();
+  const token = localStorage.getItem("token");
+
+  // ---------------- FETCH COURSE ----------------
   useEffect(() => {
     const fetchCourse = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:3002/api/courses/${id}`
+          `${import.meta.env.VITE_API_BASE}/api/courses/${id}`
         );
         setCourse(data);
-      } catch (err) {
+      } catch {
         setError(true);
       } finally {
         setLoading(false);
@@ -26,13 +34,40 @@ export default function CourseDetails() {
     fetchCourse();
   }, [id]);
 
+  // ---------------- FETCH OWNED COURSES ----------------
+  useEffect(() => {
+    if (!token) return;
+
+    axios
+      .get(`${import.meta.env.VITE_API_BASE}/api/courses/owned`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        setOwnedIds(res.data.ownedCourseIds || []);
+      })
+      .catch(() => setOwnedIds([]));
+  }, [token]);
+
+  // ---------------- DERIVED STATES (SAFE) ----------------
+  const isInCart =
+    course &&
+    cartItems.some((item) => {
+      const c = item.course || item;
+      return c._id === course._id;
+    });
+
+  const isPurchased = course && ownedIds.includes(course._id);
+
+  // ---------------- EARLY RETURNS (AFTER HOOKS) ----------------
   if (loading) return <div className="text-center mt-5">Loading...</div>;
   if (error || !course)
     return (
       <div className="text-center mt-5 text-danger">Course not found.</div>
     );
 
-  // Fallback sample data (until you store these fields in DB)
+  // ---------------- FALLBACK DATA ----------------
   const level = course.level || "Beginner";
   const requirements = course.requirements || [
     "No prior experience required",
@@ -47,9 +82,10 @@ export default function CourseDetails() {
     "Final assessment and deployment strategies.",
   ];
 
+  // ---------------- UI ----------------
   return (
     <div className="container py-5">
-      {/* Page Heading */}
+      {/* Heading */}
       <div className="mb-4">
         <h1 className="fw-bold">{course.title}</h1>
         <p className="text-secondary">
@@ -58,9 +94,8 @@ export default function CourseDetails() {
       </div>
 
       <div className="row">
-        {/* LEFT SIDE */}
+        {/* LEFT */}
         <div className="col-lg-8">
-          {/* Requirements */}
           <div className="card shadow-sm mb-4">
             <div className="card-body">
               <h4 className="fw-bold mb-3">Requirements</h4>
@@ -72,17 +107,13 @@ export default function CourseDetails() {
             </div>
           </div>
 
-          {/* Description */}
           <div className="card shadow-sm mb-4">
             <div className="card-body">
               <h4 className="fw-bold mb-3">Description</h4>
-              <p className="text-muted" style={{ whiteSpace: "pre-line" }}>
-                {course.description}
-              </p>
+              <p className="text-muted">{course.description}</p>
             </div>
           </div>
 
-          {/* Course Content */}
           <div className="card shadow-sm mb-4">
             <div className="card-body">
               <h4 className="fw-bold mb-3">Course Content</h4>
@@ -101,60 +132,52 @@ export default function CourseDetails() {
                 className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
                 style={{ width: "60px", height: "60px", fontSize: "24px" }}
               >
-                {course.instructor?.name?.charAt(0)}
+                {course.instructor?.name?.charAt(0) || "I"}
               </div>
 
               <div>
-                <h5 className="fw-bold mb-0">{course.instructor?.name}</h5>
+                <h5 className="fw-bold mb-0">
+                  {course.instructor?.name || "Instructor"}
+                </h5>
                 <p className="text-muted mb-0">Instructor</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* RIGHT SIDE — Udemy Style Card (NON-STICKY) */}
+        {/* RIGHT */}
         <div className="col-lg-4">
-          <div className="card shadow-sm p-4" style={{ borderRadius: "12px" }}>
-            {/* Pricing */}
-            <div className="d-flex align-items-end gap-2">
-              <h2 className="fw-bold mb-0">₹{course.price}</h2>
+          <div className="card shadow-sm p-4">
+            <h2 className="fw-bold">₹{course.price}</h2>
 
-              {course.originalPrice && (
-                <>
-                  <h5 className="text-muted text-decoration-line-through mb-1">
-                    ₹{course.originalPrice}
-                  </h5>
-                  <span className="text-success fw-bold mb-1">
-                    {Math.round(
-                      ((course.originalPrice - course.price) /
-                        course.originalPrice) *
-                        100
-                    )}
-                    % off
-                  </span>
-                </>
-              )}
-            </div>
-
-            {/* Timer */}
-            <p className="text-danger small mt-2">
-              <i className="bi bi-clock-history me-1"></i>
-              Few hours left at this price!
-            </p>
-
-            {/* Buttons */}
-            <button className="btn btn-dark w-100 py-2 fw-bold mt-3">
-              Add to cart
+            {/* ADD TO CART */}
+            <button
+              className={`btn w-100 py-2 fw-bold mt-3 ${
+                isPurchased
+                  ? "btn-secondary"
+                  : isInCart
+                  ? "btn-success"
+                  : "btn-dark"
+              }`}
+              disabled={isPurchased || isInCart}
+              onClick={() => addToCart(course)}
+            >
+              {isPurchased
+                ? "Purchased"
+                : isInCart
+                ? "Added to Cart"
+                : "Add to Cart"}
             </button>
 
-            {/* <button className="btn btn-outline-dark w-100 py-2 fw-bold mt-3">
-              Buy now
-            </button> */}
+            {/* BUY NOW */}
+            {!isPurchased ? (
+              <CheckoutButton course={course} />
+            ) : (
+              <button className="btn btn-success w-100 mt-3" disabled>
+                Purchased
+              </button>
+            )}
 
-            <CheckoutButton course={course} />
-
-
-            {/* Guarantee */}
             <p className="text-center text-muted small mt-3">
               30-Day Money-Back Guarantee
             </p>

@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { title } from "process";
 const { Schema } = mongoose;
 
 
@@ -18,25 +17,57 @@ const moduleSchema = new Schema({
 
 
 
-const CourseSchema = new Schema({
-    title : { type: String , required : true},
-    description : { type : String , required : true},
-    price : {type : Number , required : true , default : 0},
-    instructor : {
-        type: Schema.ObjectId,
-        ref : 'User',
-        required : true,
+// const CourseSchema = new Schema({
+//     title : { type: String , required : true},
+//     description : { type : String , required : true},
+//     price : {type : Number , required : true , default : 0},
+//     instructor : {
+//         type: Schema.ObjectId,
+//         ref : 'User',
+//         required : true,
+//     },
+//     category : {
+//         type : Schema.ObjectId,
+//         ref : 'Category',
+//         required : true,
+//     },
+//     enrolledStudents : {
+//         type : Schema.ObjectId,
+//         ref : 'User',
+//     }
+// },{timestamps : true});
+
+const CourseSchema = new Schema(
+  {
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    price: { type: Number, required: true, default: 0 },
+
+    instructor: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-    category : {
-        type : Schema.ObjectId,
-        ref : 'Category',
-        required : true,
+
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
     },
-    enrolledStudents : {
-        type : Schema.ObjectId,
-        ref : 'User',
-    }
-},{timestamps : true});
+
+    // 🔥 FIXED: ARRAY, NOT SINGLE VALUE
+    enrolledStudents: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+
+    // 🔥 REQUIRED FOR LEARNING FLOW
+    modules: [moduleSchema],
+  },
+  { timestamps: true }
+);
 
 const Course = mongoose.model('Course',CourseSchema);
 
