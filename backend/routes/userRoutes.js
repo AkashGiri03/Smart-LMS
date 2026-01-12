@@ -1,5 +1,5 @@
 import express from 'express';
-import { getUserProfile, updateUserProfile } from '../controllers/userController.js'
+import { getUserProfile, updateProfile  } from '../controllers/userController.js'
 import { authProtect } from '../middlewares/authMiddleware.js';
 
 
@@ -12,7 +12,7 @@ router.get('/profile', authProtect , getUserProfile);
 
 
 //update user profile
-router.put('/profile', authProtect , updateUserProfile);
+router.put('/profile', authProtect , updateProfile);
 
 
 export default router;

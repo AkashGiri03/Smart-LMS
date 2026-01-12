@@ -44,32 +44,49 @@ export default function Navbar() {
           {/* RIGHT SIDE NAV LINKS & BUTTONS */}
           <div className="d-flex align-items-center ms-auto gap-4">
             {/* HOME + COURSES (RIGHT SIDE) */}
-            <ul className="navbar-nav mb-0 gap-3 d-flex flex-row">
+            <ul className="navbar-nav mb-0 gap-3 d-flex flex-row align-items-center">
+              {/* HOME */}
               <li className="nav-item">
                 <Link className="nav-link" to="/">
                   Home
                 </Link>
               </li>
+
+              {/* COURSES */}
               <li className="nav-item">
                 <Link className="nav-link" to="/courses">
                   Courses
                 </Link>
               </li>
 
-              {/* Showing the mycourses when user logged-in */}
-              {user && (
+              {/* STUDENT ONLY */}
+              {user?.role === "student" && (
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/dashboard">
+                      Dashboard
+                    </Link>
+                  </li>
+
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/cart">
+                      🛒 Cart ({cartItems.length})
+                    </Link>
+                  </li>
+                </>
+              )}
+
+              {/* INSTRUCTOR ONLY */}
+              {user?.role === "instructor" && (
                 <li className="nav-item">
-                  <Link className="nav-link" to="/my-courses">
-                    My Courses
+                  <Link
+                    className="nav-link fw-semibold"
+                    to="/instructor/dashboard"
+                  >
+                    Instructor Dashboard
                   </Link>
                 </li>
               )}
-
-              <li>
-                <Link className="nav-link" to="/cart">
-                  🛒 Cart ({cartItems.length})
-                </Link>
-              </li>
             </ul>
 
             {/* LOGIN / SIGNUP / LOGOUT BUTTONS */}
@@ -86,9 +103,24 @@ export default function Navbar() {
               ) : (
                 <div className="d-flex align-items-center gap-3">
                   {/* WELCOME MESSAGE */}
-                  <span className="text-light fw-semibold">
+                  <Link
+                    to="/profile"
+                    className="text-light fw-semibold text-decoration-none"
+                    style={{ cursor: "pointer" }}
+                    onMouseOver={(e) => {
+                      e.target.style.boxShadow = "0 4px 12px rgba(0,0,0,0.2)";
+                    }}
+                    onMouseOut={(e) => {
+                      e.target.style.boxShadow = "none";
+                    }}
+                  >
+                    <img
+                      src={user?.avatar || "/default-avatar.png"}
+                      className="rounded-circle"
+                      style={{ width: 36, height: 36 }}
+                    />
                     Hi, {user.name}
-                  </span>
+                  </Link>
 
                   {/* LOGOUT BUTTON */}
                   <button className="btn btn-danger px-3" onClick={logout}>

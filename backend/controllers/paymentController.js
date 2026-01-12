@@ -3,6 +3,7 @@ import crypto from "crypto";
 import User from "../models/UserModel.js";
 import Order from "../models/Order.js";
 import Cart from "../models/Cart.js";
+import CourseProgress from "../models/CourseProgress.js";
 
 // create order (amount in INR)
 export const createOrder = async (req, res) => {
@@ -68,6 +69,27 @@ export const verifyPayment = async (req, res) => {
       },
     });
 
+    for (const courseId of courseIds) {
+      const exists = await CourseProgress.findOne({
+        user: req.user._id,
+        course: courseId,
+      });
+
+      if (!exists) {
+        await CourseProgress.create({
+          user: req.user._id,
+          course: courseId,
+          completedLessons: [],
+          progressPercent: 0,
+          completed: false,
+          lastLesson: {
+            moduleIndex: 0,
+            lessonIndex: 0,
+          },
+        });
+      }
+    }
+
     const updatedUser = await User.findById(req.user._id);
     console.log("User enrolledCourses:", updatedUser.enrolledCourses);
 
@@ -89,7 +111,7 @@ export const verifyPayment = async (req, res) => {
     // ✅ STEP 2D: Tell frontend what to do next
     return res.status(200).json({
       success: true,
-      redirectTo: "/my-courses",
+      redirectTo: "/dashboard",
     });
   } catch (err) {
     console.error("verifyPayment error:", err);

@@ -11,6 +11,9 @@ import paymentRoutes from "./routes/paymentRoutes.js";
 import webhookRoutes from "./routes/webhooks.js";
 import userRoutes from './routes/userRoutes.js';
 import cartRoutes from './routes/cartRoutes.js';
+import progressRoutes from './routes/progressRoutes.js';
+import instructorRoutes from "./routes/instructorRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 
 
 dotenv.config();
@@ -37,6 +40,10 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/webhook", webhookRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/progress",progressRoutes );
+app.use("/api/instructor", instructorRoutes);
+app.use("/api/upload", uploadRoutes);
+
 
 
 if(process.env.NODE_ENV === 'dev'){

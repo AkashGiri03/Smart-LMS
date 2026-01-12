@@ -11,8 +11,11 @@ import PrivateRoute from "./components/PrivateRoute.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import Cart from "./pages/Cart.jsx";
 import Checkout from "./pages/CheckOut.jsx";
-import MyCourses from "./pages/MyCourses";
 import LearnCourse from "./pages/LearnCourse.jsx";
+import Dashboard from "./pages/DashBoard.jsx";
+import InstructorDashboard from "./pages/instructor/InstructorDashboard.jsx";
+import CreateCourse from "./pages/instructor/CreateCourse.jsx";
+import EditCourse from "./pages/instructor/EditCourse.jsx";
 
 function App() {
   return (
@@ -28,10 +31,19 @@ function App() {
           <Route path="/course/:id" element={<CourseDetails />} />
           <Route path="/cart" element={<Cart />} />
           <Route element={<PrivateRoute />}>
-            <Route path="/learn/:courseId" element={<LearnCourse/>} />
+            <Route path="/learn/:courseId" element={<LearnCourse />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="/my-courses" element={<MyCourses />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route
+              path="/instructor/dashboard"
+              element={<InstructorDashboard />}
+            />
+            <Route path="/instructor/courses/new" element={<CreateCourse />} />
+            <Route
+              path="/instructor/courses/:id/edit"
+              element={<EditCourse />}
+            />
           </Route>
         </Routes>
       </main>

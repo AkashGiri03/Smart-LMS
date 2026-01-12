@@ -3,16 +3,17 @@ const { Schema } = mongoose;
 
 
 // lesson schema 
-const lessonSchema = new Schema({
-    title : { type : String , require: true},
-    videoUrl : { type : String , required : true},
-})
+const lessonSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  videoUrl: { type: String, required: true },
+  pdfUrl: { type: String }, // optional
+});
 
 // module schema
-const moduleSchema = new Schema({
-    title : { type : String , required : true},
-    lessons : [lessonSchema],
-})
+const moduleSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  lessons: [lessonSchema],
+});
 
 
 
