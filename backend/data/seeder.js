@@ -3,7 +3,6 @@
 // import User from "../models/UserModel.js";
 // import fs from "fs";
 
-
 // const importData = async() =>{
 //     try {
 //         //clear the database
@@ -15,9 +14,8 @@
 //     //insert the data
 //     const userData = JSON.parse(fs.readFileSync(path.join(__dirname,'/data/users/json'),'utf-8'));
 
-
 //     const usersWithHashedPassword = userData.map((user)=>{
-//         //create passssword hash 
+//         //create passssword hash
 //         const salt = bcrypt.genSaltSync(10);
 //         const hashedPassword = bcrypt.hashSync(user.password,salt);
 //         return { ...user , password: hashedPassword};
@@ -25,7 +23,7 @@
 
 //     const createdUsers = await User.insertMany(usersWithHashedPassword);
 
-//     const instructorUser = createdUsers.find((user) =>user.role === 'instructor') 
+//     const instructorUser = createdUsers.find((user) =>user.role === 'instructor')
 
 //     //insert category data
 //     const categoryData = JSON.parse(fs.readFileSync(path.join(__dirname,'/data/category.json'), 'utf-8'));
@@ -57,27 +55,25 @@
 //     }
 
 //     //logic to add script to run seed file for different methods
-//     if(process.argv[2] === '-d'){  
+//     if(process.argv[2] === '-d'){
 //         destroyData();
 //     } else {
 //         importData("import data");
 //         console.log("import data");
 //     }
 
-
-
 // updated version
 
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 import Category from "../models/CategoryModel.js";
 import Course from "../models/CourseModel.js";
 import User from "../models/UserModel.js";
 import fs from "fs";
-import path from 'path';
-import bcrypt from 'bcryptjs';
-import { fileURLToPath } from 'url';
-import connectdb from '../config/db.js';
-import dotenv from 'dotenv';
+import path from "path";
+import bcrypt from "bcryptjs";
+import { fileURLToPath } from "url";
+import connectdb from "../config/db.js";
+import dotenv from "dotenv";
 
 // Define __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -143,7 +139,9 @@ const importData = async () => {
     await User.deleteMany();
 
     // Read user data
-    const userData = JSON.parse(fs.readFileSync(path.join(__dirname, 'users.json'), 'utf-8'));
+    const userData = JSON.parse(
+      fs.readFileSync(path.join(__dirname, "users.json"), "utf-8")
+    );
 
     // Hash passwords
     const usersWithHashedPassword = userData.map((user) => {
@@ -155,15 +153,19 @@ const importData = async () => {
     const createdUsers = await User.insertMany(usersWithHashedPassword);
 
     // Pick an instructor
-    const instructorUser = createdUsers.find(user => user.role === 'instructor');
+    const instructorUser = createdUsers.find(
+      (user) => user.role === "instructor"
+    );
 
     // Read categories
-    const categoryData = JSON.parse(fs.readFileSync(path.join(__dirname, 'category.json'), 'utf-8'));
+    const categoryData = JSON.parse(
+      fs.readFileSync(path.join(__dirname, "category.json"), "utf-8")
+    );
     const createdCategories = await Category.insertMany(categoryData);
 
     // Helper to get category ID
     const getCategory = (name) =>
-      createdCategories.find(cat => cat.name === name)._id;
+      createdCategories.find((cat) => cat.name === name)._id;
 
     // Insert multiple courses
     const courses = [
@@ -173,6 +175,10 @@ const importData = async () => {
         price: 99,
         instructor: instructorUser._id,
         category: getCategory("Web Dev"),
+        thumbnail:
+          "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d",
+        rating: 4.7,
+        totalReviews: 1240,
       },
       {
         title: "DSA Masterclass",
@@ -180,6 +186,9 @@ const importData = async () => {
         price: 79,
         instructor: instructorUser._id,
         category: getCategory("DSA"),
+        thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
+        rating: 4.8,
+        totalReviews: 980,
       },
       {
         title: "AI Fundamentals",
@@ -187,6 +196,10 @@ const importData = async () => {
         price: 129,
         instructor: instructorUser._id,
         category: getCategory("AI"),
+        thumbnail:
+          "https://images.unsplash.com/photo-1677442136019-21780ecad995",
+        rating: 4.5,
+        totalReviews: 760,
       },
       {
         title: "UI/UX Design Bootcamp",
@@ -194,6 +207,9 @@ const importData = async () => {
         price: 59,
         instructor: instructorUser._id,
         category: getCategory("Design"),
+        thumbnail: "https://images.unsplash.com/photo-1559028012-481c04fa702d",
+        rating: 4.6,
+        totalReviews: 540,
       },
       {
         title: "Data Analytics Pro",
@@ -201,6 +217,9 @@ const importData = async () => {
         price: 89,
         instructor: instructorUser._id,
         category: getCategory("Data Analytics"),
+        thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71",
+        rating: 4.4,
+        totalReviews: 620,
       },
       {
         title: "Advanced Machine Learning",
@@ -208,7 +227,11 @@ const importData = async () => {
         price: 149,
         instructor: instructorUser._id,
         category: getCategory("AI"),
-      }
+        thumbnail:
+          "https://images.unsplash.com/photo-1620712943543-bcc4688e7485",
+        rating: 4.9,
+        totalReviews: 410,
+      },
     ];
 
     await Course.insertMany(courses);
@@ -221,23 +244,21 @@ const importData = async () => {
   }
 };
 
-
-
 const destroyData = async () => {
   try {
     await Course.deleteMany();
     await Category.deleteMany();
     await User.deleteMany();
-    console.log('Data destroyed successfully!');
+    console.log("Data destroyed successfully!");
     process.exit();
   } catch (error) {
-    console.log('Error while destroying data:', error);
+    console.log("Error while destroying data:", error);
     process.exit(1);
   }
 };
 
 // Run seed or destroy based on CLI arguments
-if (process.argv[2] === '-d') {
+if (process.argv[2] === "-d") {
   destroyData();
 } else {
   importData();

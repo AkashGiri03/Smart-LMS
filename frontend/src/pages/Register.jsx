@@ -35,7 +35,7 @@ export default function Register({ setUser, setToken }) {
     try {
       setLoading(true);
       const { data } = await axios.post(
-        `${import.meta.env.VITE_API_BASE}/api/users/register`,
+        `${import.meta.env.VITE_API_BASE}/api/auth/register`,
         {
           name: formData.name,
           email: formData.email,

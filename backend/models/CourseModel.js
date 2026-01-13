@@ -44,6 +44,21 @@ const CourseSchema = new Schema(
     description: { type: String, required: true },
     price: { type: Number, required: true, default: 0 },
 
+    thumbnail: {
+      type: String,
+      required: false,
+    },
+
+    rating: {
+      type: Number,
+      default: 0,
+    },
+
+    totalReviews: {
+      type: Number,
+      default: 0,
+    },
+
     instructor: {
       type: Schema.Types.ObjectId,
       ref: "User",

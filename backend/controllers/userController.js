@@ -20,12 +20,12 @@ export const updateProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.name = req.body.name ?? user.name;
-    user.email = req.body.email ?? user.email;
-    user.bio = req.body.bio ?? user.bio;
-    user.phone = req.body.phone ?? user.phone;
-    user.address = req.body.address ?? user.address;
-    user.avatar = req.body.avatar ?? user.avatar;
+    if (req.body.name !== undefined) user.name = req.body.name;
+    if (req.body.email !== undefined) user.email = req.body.email;
+    if (req.body.bio !== undefined) user.bio = req.body.bio;
+    if (req.body.phone !== undefined) user.phone = req.body.phone;
+    if (req.body.address !== undefined) user.address = req.body.address;
+    if (req.body.avatar !== undefined) user.avatar = req.body.avatar;
 
     const updatedUser = await user.save();
 

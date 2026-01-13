@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+
+
 
 export default function EditCourse() {
   const [lessonForms, setLessonForms] = useState({});
+  const navigate = useNavigate();
 
   //   const [activeModule, setActiveModule] = useState(null);
 
@@ -90,6 +95,28 @@ export default function EditCourse() {
     );
 
     setCourse(res.data);
+  };
+
+  const deleteCourse = async () => {
+    if (
+      !window.confirm(
+        "This will permanently delete the course and ALL its modules and lessons. Continue?"
+      )
+    )
+      return;
+
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_BASE}/api/courses/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      // redirect after delete
+      navigate("/instructor/courses");
+
+    } catch (err) {
+      console.error(err);
+      alert("Failed to delete course");
+    }
   };
 
   const uploadFile = async (file, type, moduleIndex) => {
@@ -218,6 +245,18 @@ export default function EditCourse() {
           </div>
         </div>
       ))}
+
+      <hr />
+
+      <div className="mt-5 mb-5 p-3 border border-danger rounded">
+        <p className="small text-muted">
+          Deleting a course is permanent and cannot be undone.
+        </p>
+
+        <button className="btn btn-danger" onClick={deleteCourse}>
+          Delete Course
+        </button>
+      </div>
     </div>
   );
 }

@@ -201,3 +201,23 @@ export const getCourseForLearning = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+
+//delete course 
+export const deleteCourse = async (req, res) => {
+  try {
+    const course = await Course.findById(req.params.id);
+
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    await course.deleteOne();
+
+    res.json({ message: "Course deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to delete course" });
+  }
+};
+

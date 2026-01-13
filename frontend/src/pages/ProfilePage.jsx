@@ -21,41 +21,53 @@ const ProfilePage = () => {
 
   // 🔹 Fetch profile
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_API_BASE}/api/user/profile`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+    if (user) {
+      setForm({
+        name: user.name || "",
+        email: user.email || "",
+        bio: user.bio || "",
+        phone: user.phone || "",
+        address: user.address || "",
+      });
 
-        setForm({
-          name: res.data.name || "",
-          email: res.data.email || "",
-          bio: res.data.bio || "",
-          phone: res.data.phone || "",
-          address: res.data.address || "",
-          avatar: res.data.avatar || "",
-        });
-
-        setAvatarPreview(user.avatar || "");
-      } catch (err) {
-        console.error("Failed to load profile", err);
-      }
-    };
-
-    fetchProfile();
-  }, []);
+      setAvatarPreview(user.avatar || "");
+    }
+  }, [user]);
 
   // 🔹 Update profile
+
+  const uploadAvatar = async () => {
+    if (!avatarFile) return user.avatar;
+
+    const formData = new FormData();
+    formData.append("file", avatarFile);
+    formData.append("type", "avatar");
+
+    const res = await fetch(
+      `${import.meta.env.VITE_API_BASE}/api/upload/upload`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      }
+    );
+
+    const data = await res.json();
+    return data.url; // THIS is avatarUrl
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      let avatarUrl = user.avatar;
+
+      if (avatarFile) {
+        avatarUrl = await uploadAvatar(); // this must return the Cloudinary URL
+      }
       const res = await fetch(
         `${import.meta.env.VITE_API_BASE}/api/user/profile`,
         {
@@ -69,23 +81,21 @@ const ProfilePage = () => {
             bio: form.bio,
             phone: form.phone,
             address: form.address,
+            avatar: avatarUrl,
           }),
         }
       );
 
       if (!res.ok) throw new Error("Update failed");
 
+      // 👇 RIGHT HERE
       const updatedUser = await res.json();
 
-      const newUser = {
-        ...user,
-        ...updatedUser,
-      };
-
+      const newUser = { ...user, ...updatedUser };
       setAuthUser(newUser);
       localStorage.setItem("user", JSON.stringify(newUser));
 
-      alert("Profile updated successfully");
+      alert("Profile updated");
     } catch (err) {
       console.error(err);
       alert("Profile update failed");

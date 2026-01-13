@@ -31,6 +31,7 @@ export default function Dashboard() {
   }, []);
 
   if (loading) return <div className="container mt-5">Loading...</div>;
+  
 
   const allCourses = progressData;
   const inProgress = progressData.filter((c) => !c.completed);
@@ -91,6 +92,8 @@ export default function Dashboard() {
       <div className="d-flex flex-column gap-4">
         {visibleCourses.map((item) => {
           const course = item.course;
+
+          if (!course) return null;
 
           return (
             <div

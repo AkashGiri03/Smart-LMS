@@ -6,6 +6,7 @@ export default function InstructorDashboard() {
   const [courses, setCourses] = useState([]);
   const token = localStorage.getItem("token");
 
+
   useEffect(() => {
     axios
       .get(

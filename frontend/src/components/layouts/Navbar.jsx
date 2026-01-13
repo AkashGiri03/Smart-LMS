@@ -60,20 +60,36 @@ export default function Navbar() {
               </li>
 
               {/* STUDENT ONLY */}
+              {/* STUDENT DASHBOARD */}
               {user?.role === "student" && (
-                <>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/dashboard">
-                      Dashboard
-                    </Link>
-                  </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/dashboard">
+                    Dashboard
+                  </Link>
+                </li>
+              )}
 
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/cart">
-                      🛒 Cart ({cartItems.length})
-                    </Link>
-                  </li>
-                </>
+              {/* CART — GUEST + STUDENT */}
+              {(!user || user?.role === "student") && (
+                <li className="nav-item position-relative">
+                  <Link className="nav-link position-relative" to="/cart">
+                    <i className="bi bi-cart3 fs-5"></i>
+
+                    {cartItems.length > 0 && (
+                      <span
+                        className="badge bg-danger rounded-pill position-absolute"
+                        style={{
+                          top: "-2px",
+                          right: "-2px",
+                          fontSize: "0.65rem",
+                          padding: "0.25em 0.45em",
+                        }}
+                      >
+                        {cartItems.length}
+                      </span>
+                    )}
+                  </Link>
+                </li>
               )}
 
               {/* INSTRUCTOR ONLY */}
@@ -93,10 +109,16 @@ export default function Navbar() {
             <div className="d-flex gap-2">
               {!user ? (
                 <>
-                  <Link to="/login" className="btn btn-outline-light px-3">
+                  <Link
+                    to="/login"
+                    className="btn btn-outline-light px-3 rounded-3"
+                  >
                     Login
                   </Link>
-                  <Link to="/register" className="btn btn-primary px-3">
+                  <Link
+                    to="/register"
+                    className="btn btn-primary px-3 rounded-3"
+                  >
                     Sign Up
                   </Link>
                 </>
@@ -119,11 +141,14 @@ export default function Navbar() {
                       className="rounded-circle"
                       style={{ width: 36, height: 36 }}
                     />
-                    Hi, {user.name}
+                    {user.name}
                   </Link>
 
                   {/* LOGOUT BUTTON */}
-                  <button className="btn btn-danger px-3" onClick={logout}>
+                  <button
+                    className="btn btn-danger px-3 rounded-3"
+                    onClick={logout}
+                  >
                     Logout
                   </button>
                 </div>
