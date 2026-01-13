@@ -22,6 +22,6 @@ This project demonstrates full-stack development skills using **MongoDB, Express
 - **Backend:** Node.js, Express.js  
 - **Database:** MongoDB  
 - **Authentication:** JWT (JSON Web Tokens)  
-- **Payments:** [payment gateway, Stripe]  
+- **Payments:** [payment gateway, RazorPay]  
 
 
