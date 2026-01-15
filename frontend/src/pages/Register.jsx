@@ -53,7 +53,7 @@ export default function Register({ setUser, setToken }) {
       }
 
       alert("Registration successful!");
-      navigate("/"); // redirect to dashboard or home
+      navigate("/login"); // redirect to login
     } catch (err) {
       console.error(err);
       alert(err.response?.data?.message || "Registration failed!");
