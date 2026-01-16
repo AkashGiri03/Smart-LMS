@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-const backendURL = "http://localhost:3002";
+// const backendURL = "http://localhost:3002";
+const backendURL = import.meta.env.VITE_API_BASE;
 
 const FeaturedSection = ({ courses = [] }) => {
   const featured = courses || []; // This was temprary data passed as props before calling api
