@@ -9,7 +9,7 @@ export default function CoursesPage() {
   const [filtered, setFiltered] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const backendURL = "http://localhost:3002/api";
+  const backendURL = "https://smart-lms-u5bz.onrender.com/api";
 
   // Fetch Categories
   const fetchCategories = async () => {
