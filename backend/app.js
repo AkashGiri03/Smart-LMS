@@ -27,7 +27,7 @@ connectdb();
 
 app.use(express.json());
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: ["http://localhost:5173","https://smart-lms-frontend-vh5n.onrender.com"],
   methods: "GET,POST,PUT,DELETE",
   credentials: true
 }));
