@@ -8,6 +8,7 @@ This project demonstrates full-stack development skills using **MongoDB, Express
 Student: Can sign up, log in, view courses, enroll, access content, and track progress without anything breaking.
 
 Instructor: Can log in, create and manage courses, add content, publish them, and see enrolled students successfully.
+link -->("https://smart-lms-frontend-vh5n.onrender.com")
 
 ---
 
