@@ -10,6 +10,7 @@ Student: Can sign up, log in, view courses, enroll, access content, and track pr
 Instructor: Can log in, create and manage courses, add content, publish them, and see enrolled students successfully.
 
 You can check the functionality using this credential or you can create them 
+
 "email":"instructor@example.com","password":"password@123"
 "email":"student@example.com","password":"password@123"
 
