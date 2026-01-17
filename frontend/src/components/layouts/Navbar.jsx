@@ -21,6 +21,7 @@ export default function Navbar() {
       <div className="container">
         {/* Brand */}
         <Link className="navbar-brand fw-bold fs-4" to="/">
+          <img src="/logo2.png" alt="SmartLMS Logo" height="32" />
           Smart<span className="text-primary">LMS</span>
         </Link>
 
