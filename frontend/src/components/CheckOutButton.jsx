@@ -1,5 +1,6 @@
 import axios from "axios";
 import loadRazorpay from "../utils/loadRazorpay";
+import { useNavigate } from "react-router-dom";
 
 export default function CheckoutButton({ course, cartItems, total }) {
   const handleBuy = async () => {
@@ -8,7 +9,7 @@ export default function CheckoutButton({ course, cartItems, total }) {
     // 🚫 NOT LOGGED IN
     if (!token) {
       localStorage.setItem("redirectAfterLogin", window.location.pathname);
-      window.location.href = "/login";
+      navigate("/login");
       return;
     }
 
