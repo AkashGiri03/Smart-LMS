@@ -3,6 +3,7 @@ import loadRazorpay from "../utils/loadRazorpay";
 import { useNavigate } from "react-router-dom";
 
 export default function CheckoutButton({ course, cartItems, total }) {
+  const navigate = useNavigate();
   const handleBuy = async () => {
     const token = localStorage.getItem("token");
 
