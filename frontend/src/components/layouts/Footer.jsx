@@ -59,20 +59,44 @@ export default function Footer() {
           {/* Social Media */}
           <div class="col-md-3 mb-3 mb-md-0">
             <h6 class="fw-bold">Follow Us</h6>
-            <div class="d-flex gap-3 mt-2">
-              <a href="https://www.facebook.com/" class="text-light fs-5 p-2">
-                <i class="bi bi-facebook"></i>
-              </a>
-              <a href="https://x.com/?lang=en-in" class="text-light fs-5 p-2">
-                <i class="bi bi-twitter"></i>
-              </a>
-              <a href="https://www.instagram.com/" class="text-light fs-5 p-2">
-                <i class="bi bi-instagram"></i>
-              </a>
-              <a href="https://www.linkedin.com/" class="text-light fs-5 p-2">
-                <i class="bi bi-linkedin"></i>
-              </a>
-            </div>
+                          <div class="d-flex gap-3 mt-2">
+                <a
+                  href="https://www.facebook.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-light fs-5 p-2"
+                >
+                  <i class="bi bi-facebook"></i>
+                </a>
+              
+                <a
+                  href="https://x.com/?lang=en-in"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-light fs-5 p-2"
+                >
+                  <i class="bi bi-twitter"></i>
+                </a>
+              
+                <a
+                  href="https://www.instagram.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-light fs-5 p-2"
+                >
+                  <i class="bi bi-instagram"></i>
+                </a>
+              
+                <a
+                  href="https://www.linkedin.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-light fs-5 p-2"
+                >
+                  <i class="bi bi-linkedin"></i>
+                </a>
+              </div>
+
           </div>
         </div>
 
