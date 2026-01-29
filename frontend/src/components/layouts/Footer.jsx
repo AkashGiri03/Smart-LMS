@@ -32,21 +32,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/dashboard"
-                  className="text-light text-decoration-none"
-                >
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="text-light text-decoration-none">
-                  About
-                </Link>
-              </li>
-              <li>
                 <Link to="/contact" className="text-light text-decoration-none">
-                  Contact
+                  Contact Us
                 </Link>
               </li>
             </ul>
@@ -73,16 +60,16 @@ export default function Footer() {
           <div class="col-md-3 mb-3 mb-md-0">
             <h6 class="fw-bold">Follow Us</h6>
             <div class="d-flex gap-3 mt-2">
-              <a href="#" class="text-light fs-5 p-2">
+              <a href="https://www.facebook.com/" class="text-light fs-5 p-2">
                 <i class="bi bi-facebook"></i>
               </a>
-              <a href="#" class="text-light fs-5 p-2">
+              <a href="https://x.com/?lang=en-in" class="text-light fs-5 p-2">
                 <i class="bi bi-twitter"></i>
               </a>
-              <a href="#" class="text-light fs-5 p-2">
+              <a href="https://www.instagram.com/" class="text-light fs-5 p-2">
                 <i class="bi bi-instagram"></i>
               </a>
-              <a href="#" class="text-light fs-5 p-2">
+              <a href="https://www.linkedin.com/" class="text-light fs-5 p-2">
                 <i class="bi bi-linkedin"></i>
               </a>
             </div>
